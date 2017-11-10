@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 func main() {
+	// a call to viper to test build with viper
+	viper.AutomaticEnv()
 	flag.Parse()
 	logger, err := zap.NewProduction()
 	if err != nil {

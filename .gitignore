@@ -13,4 +13,5 @@
 
 bazel-*
 
-vendor
+# check in vendor for trouble shooting
+#vendor
