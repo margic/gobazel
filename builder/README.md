@@ -7,4 +7,4 @@ the project is in a linux container.
 The builder docker images is provided to fill the gap and provide a native
 linux build environment for the project.
 
-It's intended to be used with my [gobazel demo project](https://github.com/margic/gobazel"). 
+It's intended to be used with my [gobazel demo project](https://github.com/margic/gobazel").

@@ -2,6 +2,7 @@ FROM ubuntu
 
 RUN apt-get update \
     && apt-get install -y curl \
+    && apt-get install -y python-pip python-dev build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # set up source of bazel
