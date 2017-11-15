@@ -8,3 +8,7 @@ The builder docker images is provided to fill the gap and provide a native
 linux build environment for the project.
 
 It's intended to be used with my [gobazel demo project](https://github.com/margic/gobazel").
+
+Docker Credential Helper
+The docker credential helper is provided to make enable login to index.docker.io
+using the secret service option. Configuration is provided in the ~/.docker/config.json
