@@ -34,9 +34,10 @@ ENV PATH=$PATH:$GOPATH/bin
 RUN mkdir -p ~/.docker
 COPY config.json ~/.docker/config.json
 
-# init pass store create key
+# init pass store for the docker credential pass to work
 COPY initpass.sh .
 RUN ./initpass.sh
+COPY addpass.sh .
 
 # Volume for mounting project source
 VOLUME ["/source"]

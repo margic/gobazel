@@ -20,7 +20,6 @@ Expire-Date: 0
 EOF
 umask 0002
 
-# gpg2 --batch --gen-key /tmp/gpg-genkey.conf -o gpg-keygen.log 2> gpg-keygen_error.log
 gpg2 --batch --output gpg-builder.rev --full-gen-key /tmp/gpg-genkey.conf
 rm /tmp/gpg-genkey.conf
 
