@@ -12,5 +12,15 @@ filegroup(
     name = "services",
     srcs = [
         "//service1:service1",
+        "//service2:service2"
+    ],
+)
+
+# filegroup to push all images
+filegroup(
+    name = "push",
+    srcs = [
+        "//service1:push-service1-image",
+        "//service2:push-service2-image"
     ],
 )
