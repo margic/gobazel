@@ -31,16 +31,19 @@ RUN mkdir -p /go/src/github.com/docker \
     && mv bin/docker-credential-pass $GOPATH/bin/docker-credential-pass
 
 ENV PATH=$PATH:$GOPATH/bin
-RUN mkdir -p ~/.docker
-COPY config.json ~/.docker/config.json
+RUN mkdir -p /root/.docker
+COPY config.json /root/.docker/config.json
 
+RUN mkdir -p /opt/gobazel
 # init pass store for the docker credential pass to work
-COPY initpass.sh .
-RUN ./initpass.sh
-COPY addpass.sh .
+COPY initpass.sh /opt/gobazel/initpass.sh
+COPY addpass.sh /opt/gobazel/addpass.sh
+COPY runbazel.sh /opt/gobazel/runbazel.sh
+RUN /opt/gobazel/initpass.sh
+
 
 # Volume for mounting project source
 VOLUME ["/source"]
 WORKDIR "/source"
-ENTRYPOINT [ "bazel" ]
+ENTRYPOINT [ "/opt/gobazel/runbazel.sh" ]
 CMD ["help"]

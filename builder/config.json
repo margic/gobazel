@@ -1,3 +1,5 @@
 {
-    "credsStore": "pass"
+    "credHelpers": {
+      "index.docker.io": "pass"
+    }
 }

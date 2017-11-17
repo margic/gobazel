@@ -34,6 +34,6 @@ container_push(
    image = ":service1-image",
    format = "Docker",
    registry = "index.docker.io",
-   repository = "pcrofts/gobazel-serivce1",
+   repository = "pcrofts/gobazel-service1",
    tag = "dev",
 )

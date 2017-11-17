@@ -11,4 +11,11 @@ It's intended to be used with my [gobazel demo project](https://github.com/margi
 
 Docker Credential Helper
 The docker credential helper is provided to make enable login to index.docker.io
-using the secret service option. Configuration is provided in the ~/.docker/config.json
+using the linux pass package installed on the image. Configuration is provided in
+the ~/.docker/config.json
+
+Passing docker creds
+When starting the builder a container pass DOCKER_REGISTRY_HOST, DOCKER_REGSITRY_USER,
+DOCKER_REGSITRY_PASSWORD in. DON'T DO THIS IN CLOUD CONTAINERS. 
+
+
