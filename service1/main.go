@@ -18,5 +18,7 @@ func main() {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)
 	}
-	logger.Info("Started After Update")
+	logger.Info("Started Service 1",
+		zap.String("greeting", greeting()),
+	)
 }

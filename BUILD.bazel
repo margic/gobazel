@@ -11,8 +11,8 @@ gazelle(
 filegroup(
     name = "services",
     srcs = [
-        "//service1:service1",
-        "//service2:service2"
+        "//service1:service1-image",
+        "//service2:service2-image"
     ],
 )
 

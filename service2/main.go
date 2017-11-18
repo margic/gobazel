@@ -18,5 +18,5 @@ func main() {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)
 	}
-	logger.Info("Started Service 2")
+	logger.Info("Started Service 2 With Change")
 }
