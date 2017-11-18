@@ -1,4 +1,5 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
@@ -11,24 +12,29 @@ go_library(
 )
 
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
 go_image(
     name = "service2-image",
-    srcs = ["main.go"],
+    embed = [":go_default_library"],
     importpath = "github.com/margic/gobazel/service2",
-    deps = [
-        "//vendor/github.com/spf13/viper:go_default_library",
-        "//vendor/go.uber.org/zap:go_default_library",
-    ],
     visibility = ["//visibility:public"],
 )
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
 container_push(
-   name = "push-service2-image",
-   image = ":service2-image",
-   format = "Docker",
-   registry = "index.docker.io",
-   repository = "pcrofts/gobazel-service2",
-   tag = "dev",
-   visibility = ["//visibility:public"],
+    name = "push-service2-image",
+    format = "Docker",
+    image = ":service2-image",
+    registry = "index.docker.io",
+    repository = "pcrofts/gobazel-service2",
+    tag = "dev",
+    visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "service2",
+    embed = [":go_default_library"],
+    importpath = "github.com/margic/gobazel/service2",
+    visibility = ["//visibility:public"],
 )
