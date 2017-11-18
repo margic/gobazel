@@ -19,4 +19,4 @@ service2/service2
 buildcmd
 
 # check in vendor for trouble shooting
-#vendor
+vendor
