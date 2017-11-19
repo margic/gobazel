@@ -12,7 +12,7 @@ go_register_toolchains()
 git_repository(
     name = "io_bazel_rules_docker",
     remote = "https://github.com/bazelbuild/rules_docker.git",
-    tag = "v0.3.0",
+    commit = "da39a0bf7828ce6a55aa9dc23d0056a82fa36b18",
 )
 
 load(
@@ -27,3 +27,17 @@ load(
 )
 
 _go_image_repos()
+
+container_repositories()
+
+# This requires rules_docker to be fully instantiated before
+# it is pulled in.
+git_repository(
+    name = "io_bazel_rules_k8s",
+    commit = "8240d175e08b3e4c2a1f3d6038d33800fb1cd692",
+    remote = "https://github.com/bazelbuild/rules_k8s.git",
+)
+
+load("@io_bazel_rules_k8s//k8s:k8s.bzl", "k8s_repositories")
+
+k8s_repositories()

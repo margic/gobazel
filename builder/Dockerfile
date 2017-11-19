@@ -18,6 +18,12 @@ RUN apt-get update \
     && apt-get install -y golang-1.9-go \
     && rm -rf /var/lib/apt/lists/*
 
+# install kubectl for deploy to kubernetes
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl \
+    -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x ./kubectl \
+    && mv ./kubectl /usr/local/bin/kubectl
+
 ENV PATH=$PATH:/usr/lib/go-1.9/bin
 ENV GOPATH=/go
 
@@ -44,6 +50,7 @@ RUN /opt/gobazel/initpass.sh
 
 # Volume for mounting project source
 VOLUME ["/source"]
+VOLUME ["/root/.kube"
 WORKDIR "/source"
 ENTRYPOINT [ "/opt/gobazel/runbazel.sh" ]
 CMD ["help"]

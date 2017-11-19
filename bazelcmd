@@ -1,1 +1,2 @@
-run //service2:push-service2-image
+build //service1:push-service1-image
+

@@ -11,9 +11,12 @@ gazelle(
 filegroup(
     name = "services",
     srcs = [
+        "//service1:go_default_library",
         "//service1:service1-image",
+        "//service2:go_default_library",
         "//service2:service2-image"
     ],
+    visibility = ["//visibility:public"],
 )
 
 # filegroup to push all images

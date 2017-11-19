@@ -27,7 +27,7 @@ go_library(
         "main.go",
     ],
     importpath = "github.com/margic/gobazel/service1",
-    visibility = ["//visibility:private"],
+    visibility = ["//:__pkg__"],
     deps = [
         "//vendor/github.com/spf13/viper:go_default_library",
         "//vendor/go.uber.org/zap:go_default_library",
