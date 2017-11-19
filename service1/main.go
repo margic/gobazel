@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/spf13/viper"
@@ -18,7 +19,13 @@ func main() {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)
 	}
-	logger.Info("Started Service 1",
-		zap.String("greeting", greeting()),
-	)
+	logger.Info("starting service 1")
+	http.HandleFunc("/hello", HandleHello)
+	logger.Fatal(http.ListenAndServe(":8080", nil).Error())
+}
+
+// HandleHello send hello to client
+func HandleHello(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("hello"))
 }
