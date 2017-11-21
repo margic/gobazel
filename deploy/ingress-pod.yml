@@ -36,6 +36,7 @@ spec:
         - -d
         - --web
         - --kubernetes
+        - --web.metrics.prometheus
 ---
 kind: Service
 apiVersion: v1
