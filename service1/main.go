@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 	logger.Info("starting service 1")
-	http.HandleFunc("/hello", HandleHello)
+	http.HandleFunc("/", HandleHello)
 	logger.Fatal(http.ListenAndServe(":8080", nil).Error())
 }
 
