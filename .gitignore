@@ -20,3 +20,6 @@ buildcmd
 
 # check in vendor for trouble shooting
 vendor
+
+.kube/cache
+.kube/http-cache

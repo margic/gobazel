@@ -50,7 +50,6 @@ RUN /opt/gobazel/initpass.sh
 
 # Volume for mounting project source
 VOLUME ["/source"]
-VOLUME ["/root/.kube"
 WORKDIR "/source"
 ENTRYPOINT [ "/opt/gobazel/runbazel.sh" ]
 CMD ["help"]

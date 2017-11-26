@@ -1,1 +1,5 @@
-Put your kubectl config in here and mount it as a volume in the builder image to build using the bulider and deploy to local minikube for test.
+Put your kubectl config in here
+
+The workspace should be mounted as a volume for the builder to build
+This means the config should point to 
+/source/.kube to config kubectl
