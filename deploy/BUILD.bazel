@@ -1,0 +1,41 @@
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+
+k8s_deploy(
+    name = "deploy-ingress-rbac",
+    template = ":ingress-rbac.yaml",
+)
+
+k8s_deploy(
+    name = "deploy-ingress-pod",
+    template = ":ingress-pod.yaml",
+)
+
+k8s_deploy(
+    name = "deploy-ingress-ui",
+    template = ":ingress-ui.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-namespace",
+  template = ":gobazel-namespace.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-services",
+  template = ":gobazel-services.yaml",
+  images = {
+    "pcrofts/gobazel-service1:dev": "//service1:service1-image"
+  },
+)
+
+# Note the plurality of "objects" here.
+k8s_objects(
+   name = "deploy-all",
+   objects = [
+    "//deploy:deploy-ingress-rbac",
+    "//deploy:deploy-ingress-pod",
+    "//deploy:deploy-ingress-ui",
+    "//deploy:deploy-services"
+   ]
+)

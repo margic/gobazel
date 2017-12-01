@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: prometheus-server
-  namespace: gobazel
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.frontend.rule.type: PathPrefixStrip
@@ -20,7 +19,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: grafana-dashboard
-  namespace: gobazel
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.frontend.rule.type: PathPrefixStrip

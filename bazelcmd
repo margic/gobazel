@@ -1,2 +1,1 @@
-run //service1:push-service1-image
-
+run //deploy:deploy-all.apply
