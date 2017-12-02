@@ -20,6 +20,7 @@ spec:
   - host: traefik.minikube
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
           serviceName: traefik-web-ui
           servicePort: 80

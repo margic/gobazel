@@ -133,3 +133,6 @@ NOTES:
 3. Login with the password from step 1 and the username: admin
 
 ```
+
+registry.yaml depends on ingress being setup
+setups registry service and ingress

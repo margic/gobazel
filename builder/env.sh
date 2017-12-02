@@ -12,3 +12,4 @@ else
 fi
 
 echo "Checking for DOCKER_REGISTRY_PASSWORD done"
+

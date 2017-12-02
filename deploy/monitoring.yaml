@@ -1,19 +1,19 @@
+# if prometheus and grafanna helm charts installed use this
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: prometheus-server
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
   - host: prometheus.minikube
     http:
       paths:
-        - path: /
-          backend:
-            serviceName: monitoring-prometheus-server
-            servicePort: http
+      - path: /
+        backend:
+          serviceName: prometheus-prometheus-server
+          servicePort: http
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -21,13 +21,12 @@ metadata:
   name: grafana-dashboard
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
   - host: grafana.minikube
     http:
       paths:
-        - path: /
-          backend:
-            serviceName: grafana-grafana
-            servicePort: http
+      - path: /
+        backend:
+          serviceName: grafana-grafana
+          servicePort: http

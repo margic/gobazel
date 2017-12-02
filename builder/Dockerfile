@@ -18,14 +18,16 @@ RUN apt-get update \
     && apt-get install -y golang-1.9-go \
     && rm -rf /var/lib/apt/lists/*
 
+ENV PATH=$PATH:/usr/lib/go-1.9/bin
+ENV GOPATH=/go
+
 # install kubectl for deploy to kubernetes
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl \
     -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin/kubectl
 
-ENV PATH=$PATH:/usr/lib/go-1.9/bin
-ENV GOPATH=/go
+ENV KUBECONFIG=/source/kube/config
 
 # install docker cred helper
 RUN mkdir -p /go/src/github.com/docker \
@@ -43,13 +45,11 @@ COPY config.json /root/.docker/config.json
 RUN mkdir -p /opt/gobazel
 # init pass store for the docker credential pass to work
 COPY initpass.sh /opt/gobazel/initpass.sh
-COPY addpass.sh /opt/gobazel/addpass.sh
+COPY env.sh /opt/gobazel/env.sh
 COPY runbazel.sh /opt/gobazel/runbazel.sh
 RUN /opt/gobazel/initpass.sh
 
-
 # Volume for mounting project source
-VOLUME ["/root/.kube"]
 VOLUME ["/source"]
 WORKDIR "/source"
 ENTRYPOINT [ "/opt/gobazel/runbazel.sh" ]

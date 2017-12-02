@@ -18,24 +18,52 @@ k8s_deploy(
 
 k8s_deploy(
   name = "deploy-namespace",
-  template = ":gobazel-namespace.yaml",
+  template = ":namespace.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-registry",
+  template = ":registry.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-monitoring",
+  template = ":monitoring.yaml"
 )
 
 k8s_deploy(
   name = "deploy-services",
-  template = ":gobazel-services.yaml",
+  template = ":services.yaml",
   images = {
     "pcrofts/gobazel-service1:dev": "//service1:service1-image"
   },
 )
 
 # Note the plurality of "objects" here.
+# ensure deploy-namespace has been run or the namespace won't be created
+# bazel run //deploy:deploy-namespace.apply
 k8s_objects(
-   name = "deploy-all",
+   name = "create",
    objects = [
-    "//deploy:deploy-ingress-rbac",
-    "//deploy:deploy-ingress-pod",
-    "//deploy:deploy-ingress-ui",
-    "//deploy:deploy-services"
+    "//deploy:deploy-namespace.apply",
+    "//deploy:deploy-ingress-rbac.apply",
+    "//deploy:deploy-ingress-pod.apply",
+    "//deploy:deploy-ingress-ui.apply",
+    "//deploy:deploy-registry.apply",
+    "//deploy:deploy-monitoring.apply",
+    "//deploy:deploy-services.apply",
+   ]
+)
+
+k8s_objects(
+   name = "delete",
+   objects = [
+    "//deploy:deploy-services.delete",
+    "//deploy:deploy-monitoring.delete", 
+    "//deploy:deploy-registry.delete",
+    "//deploy:deploy-ingress-ui.delete",
+    "//deploy:deploy-ingress-pod.apply",
+    "//deploy:deploy-ingress-rbac.delete",
+    "//deploy:deploy-namespace.delete",
    ]
 )
