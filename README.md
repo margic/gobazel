@@ -10,3 +10,10 @@ Bazel requires a build file in each package. When adding dependencies to the ven
 folder using `dep ensure -add pkg` newly added packages will not have the build file
 by default. Run `bazel run //:gazelle` to automatically add build files to vendor
 pachages.
+
+
+/etc/hosts host entry
+`minikubeIP      kubernetes registry.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube`
+
+example:
+`192.168.64.19	kubernetes registry.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube`

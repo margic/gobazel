@@ -6,7 +6,7 @@ build:
 
 .PHONY: helm
 helm:
-	helm init
+	#helm init
 	helm install --namespace gobazel --name prometheus stable/prometheus
 	helm install --namespace gobazel --name grafana stable/grafana
 

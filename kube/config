@@ -2,11 +2,11 @@ apiVersion: v1
 clusters:
 - cluster:
     certificate-authority: /source/kube/ca.crt
-    server: https://kubernetes.minikube:8443
+    server: https://kubernetes:8443
   name: minikube
 contexts:
 - context:
-    cluster: minikube1
+    cluster: minikube
     user: minikube
   name: minikube
 current-context: minikube

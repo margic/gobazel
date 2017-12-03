@@ -40,7 +40,7 @@ spec:
     component: registry
   ports:
   - name: registry
-    port: 5000
+    port: 80
     targetPort: 5000
 ---
 apiVersion: extensions/v1beta1
@@ -51,7 +51,14 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: registry.minikube
+  - host: registry.gobazel
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: registry
+            servicePort: registry
+  - host: registry
     http:
       paths:
         - path: /

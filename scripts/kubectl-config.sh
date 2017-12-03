@@ -16,7 +16,7 @@ if [ -e $HOME/.minikube/client.key ]
  then cp $HOME/.minikube/client.key kube/client.key
  echo copied client.key
 fi
-if [ -e $HOME/.minikube/client.crt ]
+if [ -e $HOME/.minikube/ca.crt ]
  then cp $HOME/.minikube/ca.crt kube/ca.crt
  echo copied client.crt
 fi
