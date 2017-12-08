@@ -35,13 +35,10 @@ k8s_deploy(
   name = "deploy-services",
   template = ":services.yaml",
   images = {
-    "minikube:5000/gobazel-service1:dev": "//service1:service1-image"
+    "localhost:5000/gobazel-service1:dev": "//service1:service1-image"
   },
 )
 
-# Note the plurality of "objects" here.
-# ensure deploy-namespace has been run or the namespace won't be created
-# bazel run //deploy:deploy-namespace.apply
 k8s_objects(
    name = "create",
    objects = [
@@ -51,19 +48,19 @@ k8s_objects(
     "//deploy:deploy-ingress-ui.apply",
     "//deploy:deploy-registry.apply",
     "//deploy:deploy-monitoring.apply",
-    "//deploy:deploy-services.apply",
    ]
+)
+
+k8s_objects(
+  name = "deploy",
+  objects = [
+    "//deploy:deploy-services.apply",
+  ]
 )
 
 k8s_objects(
    name = "delete",
    objects = [
-    "//deploy:deploy-services.delete",
-    "//deploy:deploy-monitoring.delete", 
-    "//deploy:deploy-registry.delete",
-    "//deploy:deploy-ingress-ui.delete",
-    "//deploy:deploy-ingress-pod.apply",
-    "//deploy:deploy-ingress-rbac.delete",
     "//deploy:deploy-namespace.delete",
    ]
 )

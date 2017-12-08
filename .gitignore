@@ -16,10 +16,13 @@ bazel-*
 service1/service1
 service2/service2
 
-buildcmd
 
 # check in vendor for trouble shooting
 vendor
 
 .kube/cache
 .kube/http-cache
+
+kube/ca.crt
+kube/client.crt
+kube/client.key
