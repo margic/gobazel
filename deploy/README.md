@@ -143,6 +143,8 @@ Bazel can currently only push to insecure registry on localhost.
 By using localhost:5000 as the registry address allows local docker daemon (optional)
 and the minikube docker daemon to access the registry deployed in the namespace
 
+
+Run this command in a terminal it will block and remaing running. 
 ```
 kubectl port-forward --namespace gobazel \
 $(kubectl get po -n gobazel | grep registry-proxy | \
