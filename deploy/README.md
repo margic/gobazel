@@ -136,3 +136,15 @@ NOTES:
 
 registry.yaml depends on ingress being setup
 setups registry service and ingress
+
+to allow access to the registry make sure to forward port 5000 to localhost.
+Bazel can currently only push to insecure registry on localhost.
+
+By using localhost:5000 as the registry address allows local docker daemon (optional)
+and the minikube docker daemon to access the registry deployed in the namespace
+
+```
+kubectl port-forward --namespace gobazel \
+$(kubectl get po -n gobazel | grep registry-proxy | \
+awk '{print $1;}') 5000:80
+```

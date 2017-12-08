@@ -14,8 +14,8 @@ container_push(
     name = "push-service1-image",
     format = "Docker",
     image = ":service1-image",
-    registry = "registry.minikube",
-    repository = "registry.minikube/gobazel-service1",
+    registry = "localhost:5000",
+    repository = "gobazel-service1",
     tag = "dev",
     visibility = ["//visibility:public"],
 )

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: service1
-        image: pcrofts/gobazel-service1:dev
+        image: localhost:5000/gobazel-service1:dev
         ports:
         - containerPort: 8080
         - containerPort: 9090

@@ -4,12 +4,15 @@ metadata:
   name: traefik-ingress-controller
 ---
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 metadata:
   name: traefik-ingress-controller
   labels:
     k8s-app: traefik-ingress-lb
 spec:
+  selector:
+    matchLabels:
+      name: traefik-ingress-lb
   template:
     metadata:
       labels:

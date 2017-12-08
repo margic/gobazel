@@ -35,7 +35,7 @@ k8s_deploy(
   name = "deploy-services",
   template = ":services.yaml",
   images = {
-    "pcrofts/gobazel-service1:dev": "//service1:service1-image"
+    "minikube:5000/gobazel-service1:dev": "//service1:service1-image"
   },
 )
 
