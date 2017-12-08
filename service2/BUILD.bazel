@@ -15,9 +15,9 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
 go_image(
     name = "service2-image",
-    embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/service2",
-    visibility = ["//visibility:public"],
+    srcs = ["main.go"],
+    deps = [":go_default_library"],
+    importpath = "github.com/margic/gobaze/service2",
 )
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
@@ -26,15 +26,8 @@ container_push(
     name = "push-service2-image",
     format = "Docker",
     image = ":service2-image",
-    registry = "index.docker.io",
-    repository = "pcrofts/gobazel-service2",
+    registry = "localhost:5000",
+    repository = "gobazel-service2",
     tag = "dev",
-    visibility = ["//visibility:public"],
-)
-
-go_binary(
-    name = "service2",
-    embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/service2",
     visibility = ["//visibility:public"],
 )
