@@ -1,11 +1,10 @@
 # Go rules
-http_archive(
+git_repository(
     name = "io_bazel_rules_go",
-    url = "https://github.com/bazelbuild/rules_go/releases/download/0.8.0/rules_go-0.8.0.tar.gz",
-    sha256 = "8eaf2e62811169d9cf511209153effcb132826cea708b2f75d4dd5f9e57ea2aa",
+    remote = "https://github.com/bazelbuild/rules_go.git",
+    commit = "44941765617a5040d4dbb96966073180e2d70f42",
 )
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-
 go_rules_dependencies()
 go_register_toolchains()
 
@@ -28,7 +27,6 @@ load(
 )
 
 _go_image_repos()
-
 container_repositories()
 
 # This requires rules_docker to be fully instantiated before
@@ -40,7 +38,6 @@ git_repository(
 )
 
 load("@io_bazel_rules_k8s//k8s:k8s.bzl", "k8s_repositories", "k8s_defaults")
-
 k8s_repositories()
 
 k8s_defaults(

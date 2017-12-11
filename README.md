@@ -17,3 +17,41 @@ pachages.
 
 example:
 `192.168.64.19	kubernetes registry.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube`
+
+
+
+Open files error
+For OS X Sierra (10.12.X) you need to:
+
+1. Create a file at /Library/LaunchDaemons/limit.maxfiles.plist and paste the following in (feel free to change the two numbers (which are the soft and hard limits, respectively):
+
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"  
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">  
+  <dict>
+    <key>Label</key>
+    <string>limit.maxfiles</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>launchctl</string>
+      <string>limit</string>
+      <string>maxfiles</string>
+      <string>64000</string>
+      <string>524288</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ServiceIPC</key>
+    <false/>
+  </dict>
+</plist> 
+2. Change the owner of your new file:
+
+sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
+3. Load these new settings:
+
+sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist
+4. Finally, check that the limits are correct:
+
+launchctl limit maxfiles

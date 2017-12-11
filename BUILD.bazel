@@ -2,7 +2,7 @@ load("@io_bazel_rules_go//go:def.bzl", "gazelle")
 
 gazelle(
     name = "gazelle",
-    command = "fix",
+    # command = "fix",  todo should this be in here?
     external = "vendored",
     prefix = "github.com/margic/gobazel",
 )
@@ -11,9 +11,9 @@ gazelle(
 filegroup(
     name = "services",
     srcs = [
-        "//service1:go_default_library",
+        "//service1:service1",
         "//service1:service1-image",
-        "//service2:go_default_library",
+        "//service2:service2",
         "//service2:service2-image"
     ],
     visibility = ["//visibility:public"],

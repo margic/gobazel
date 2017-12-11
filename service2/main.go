@@ -6,5 +6,5 @@ import (
 
 func main() {
 	// a call to viper to test build with viper
-	fmt.Println("Test")
+	fmt.Println("Test 3")
 }

@@ -2,7 +2,7 @@
 
 # TODO THIS DOESN'T DO WHAT I INTENDED AND CAUSES COMPLICATED RUN COMMAND
 # see https://github.com/margic/gobazel/issues/1
-. /opt/gobazel/env.sh
+# . /opt/gobazel/env.sh
 
 
 # to make it easier to reuse the container and therefore the bazel cache
