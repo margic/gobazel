@@ -55,3 +55,14 @@ sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist
 4. Finally, check that the limits are correct:
 
 launchctl limit maxfiles
+
+
+Where docker rules expects the binary
+```
+/app/service1/service1-image.runfiles/__main__/service1/service1
+```
+
+what is should 
+```
+/app/service1/service1.runfiles/__main__/service1/linux_amd64_pure_stripped/service1
+```

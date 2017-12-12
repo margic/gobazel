@@ -8,11 +8,11 @@ load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_too
 go_rules_dependencies()
 go_register_toolchains()
 
-# Docker rules
+#Docker rules
 git_repository(
     name = "io_bazel_rules_docker",
-    remote = "https://github.com/bazelbuild/rules_docker.git",
-    tag = "v0.3.0",
+    remote = "https://github.com/margic/rules_docker.git",
+    commit = "d875857ec4c7a564aa6ff1456dd5d00e1c89312f",
 )
 
 load(
