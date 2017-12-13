@@ -6,8 +6,8 @@ build:
 
 .PHONY: helm
 helm:
-	- helm install --namespace gobazel --name prometheus stable/prometheus
-	- helm install --namespace gobazel --name grafana stable/grafana
+	- helm install --namespace gobazel --name prometheus -f deploy/prometheus-values.yaml stable/prometheus
+	- helm install --namespace gobazel --name grafana -f deploy/grafana-values.yaml stable/grafana
 	- kubectl get secret --namespace gobazel grafana-grafana -o jsonpath="{.data.grafana-admin-password}" | base64 --decode ; echo
 
 .PHONY: config

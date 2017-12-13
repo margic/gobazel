@@ -15,6 +15,7 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 go_image(
     name = "service1-image",
     binary = ":service1",
+    visibility = ["//visibility:public"],
 )
 
 go_binary(
