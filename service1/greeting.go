@@ -1,5 +1,9 @@
 package main
 
+import (
+	"time"
+)
+
 func greeting() string {
-	return "hello"
+	return "hello " + time.Now().String()
 }

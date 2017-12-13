@@ -46,5 +46,5 @@ func main() {
 func HandleHello(w http.ResponseWriter, r *http.Request) {
 	defer myCounter.Add(1)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("hello"))
+	w.Write([]byte(greeting()))
 }

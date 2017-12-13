@@ -66,3 +66,9 @@ what is should
 ```
 /app/service1/service1.runfiles/__main__/service1/linux_amd64_pure_stripped/service1
 ```
+
+why time sync issue happens
+https://github.com/kubernetes/minikube/issues/1378
+
+how to work arond
+`minikube ssh -- docker run -i --rm --privileged --pid=host debian nsenter -t 1 -m -u -n -i date -u $(date -u +%m%d%H%M%Y)`
