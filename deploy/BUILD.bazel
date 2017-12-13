@@ -32,10 +32,18 @@ k8s_deploy(
 )
 
 k8s_deploy(
-  name = "deploy-services",
-  template = ":services.yaml",
+  name = "deploy-service1",
+  template = ":service1.yaml",
   images = {
     "localhost:5000/gobazel-service1:dev": "//service1:service1-image"
+  },
+)
+
+k8s_deploy(
+  name = "deploy-service2",
+  template = ":service2.yaml",
+  images = {
+    "localhost:5000/gobazel-service2:dev": "//service2:service2-image"
   },
 )
 
@@ -54,7 +62,8 @@ k8s_objects(
 k8s_objects(
   name = "deploy",
   objects = [
-    "//deploy:deploy-services.apply",
+    "//deploy:deploy-service1.apply",
+    "//deploy:deploy-service2.apply",
   ]
 )
 

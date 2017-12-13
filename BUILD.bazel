@@ -6,24 +6,3 @@ gazelle(
     external = "vendored",
     prefix = "github.com/margic/gobazel",
 )
-
-# filegroup to allow build of all services in one go
-filegroup(
-    name = "services",
-    srcs = [
-        "//service1:service1",
-        "//service1:service1-image",
-        "//service2:service2",
-        "//service2:service2-image"
-    ],
-    visibility = ["//visibility:public"],
-)
-
-# filegroup to push all images
-filegroup(
-    name = "push",
-    srcs = [
-        "//service1:push-service1-image",
-        "//service2:push-service2-image"
-    ],
-)
