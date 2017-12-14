@@ -38,11 +38,33 @@ container_image(
     name = "dashboard-base-image",
     base = "@go_image_base//image",
     tars = [":config-tar", "dashboards-tar"],
+    entrypoint = ["/app/dashboard"],
+    cmd = ["create"],
 )
 
 go_image(
-    name = "dashboard-image",
+    name = "gobazel-dashboard-image",
     binary = ":dashboard",
     base = "dashboard-base-image",
     visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+container_push(
+    name = "push-dashboard-image",
+    format = "Docker",
+    image = ":gobazel-dashboard-image",
+    registry = "localhost:5000",
+    repository = "gobazel-dashboard",
+    tag = "dev",
+    visibility = ["//visibility:public"],
+)
+
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+k8s_deploy(
+  name = "deploy-dashboard",
+  template = ":dashboard.yaml",
+  images = {
+    "localhost:5000/gobazel-dashboard:dev": "//dashboard:gobazel-dashboard-image"
+  },
 )
