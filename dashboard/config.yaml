@@ -1,0 +1,6 @@
+grafana:
+  addr: grafana-grafana.gobazel
+  username: admin
+  password: Passw0rd
+dashboards:
+  path: dashboards

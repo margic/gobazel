@@ -1,0 +1,24 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/margic/gobazel/dashboard",
+    visibility = ["//visibility:private"],
+    deps = ["//dashboard/cmd:go_default_library"],
+)
+
+go_binary(
+    name = "dashboard",
+    embed = [":go_default_library"],
+    importpath = "github.com/margic/gobazel/dashboard",
+    visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
+go_image(
+    name = "dashboard-image",
+    binary = ":dashboard",
+    visibility = ["//visibility:public"],
+)
