@@ -20,7 +20,7 @@ func main() {
 		encodeResponse,
 	)
 
-	http.Handle("/greeting", greetingHandler)
+	http.Handle("/", greetingHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
@@ -42,7 +42,7 @@ type GreetingService interface {
 type greetingService struct{}
 
 func (greetingService) Greeting(_ context.Context) (string, error) {
-	return "hello " + time.Now().String(), nil
+	return "service2 " + time.Now().String(), nil
 }
 
 // greetingRequest is empty as there are no params for request but type required
