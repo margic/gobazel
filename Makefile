@@ -4,11 +4,11 @@ clean:
 .PHONY: build
 build:
 
-.PHONY: helm
-helm:
+.PHONY: monitoring
+monitoring:
 	- helm install --namespace gobazel --name prometheus -f deploy/prometheus-values.yaml stable/prometheus
 	- helm install --namespace gobazel --name grafana -f deploy/grafana-values.yaml stable/grafana
-	- kubectl get secret --namespace gobazel grafana-grafana -o jsonpath="{.data.grafana-admin-password}" | base64 --decode ; echo
+	bazel run --cpu k8 //dashboard:deploy-dashboard.apply
 
 .PHONY: config
 config:

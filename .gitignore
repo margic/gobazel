@@ -15,6 +15,7 @@ bazel-*
 
 service1/service1
 service2/service2
+dashboard/dashboard
 
 
 # check in vendor for trouble shooting

@@ -1,7 +1,9 @@
 grafana:
   addr: http://grafana-grafana.gobazel
-  resource: /api/dashboards/db
+  dashboardPath: /api/dashboards/db
+  healthPath: /api/health
   username: admin
   password: Passw0rd
+
 dashboards:
-  path: dashboards
+  filePath: dashboards

@@ -16,6 +16,7 @@ go_binary(
 )
 
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+
 # create a tar with the dashboards files in it
 pkg_tar(
     name = "dashboards-tar",
@@ -23,12 +24,13 @@ pkg_tar(
     mode = "0644",
     package_dir = "app/dashboards",
 )
+
 # create tar with config file
 pkg_tar(
     name = "config-tar",
     srcs = glob(["config.yaml"]),
     mode = "0644",
-    package_dir = "app"
+    package_dir = "app",
 )
 
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
@@ -37,12 +39,39 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 container_image(
     name = "dashboard-base-image",
     base = "@go_image_base//image",
-    tars = [":config-tar", "dashboards-tar"],
+    cmd = ["create"],
+    entrypoint = ["/app/dashboard"],
+    tars = [
+        ":config-tar",
+        "dashboards-tar",
+    ],
 )
 
 go_image(
-    name = "dashboard-image",
-    binary = ":dashboard",
+    name = "gobazel-dashboard-image",
     base = "dashboard-base-image",
+    binary = ":dashboard",
     visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
+container_push(
+    name = "push-dashboard-image",
+    format = "Docker",
+    image = ":gobazel-dashboard-image",
+    registry = "localhost:5000",
+    repository = "gobazel-dashboard",
+    tag = "dev",
+    visibility = ["//visibility:public"],
+)
+
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+
+k8s_deploy(
+    name = "deploy-dashboard",
+    images = {
+        "localhost:5000/gobazel-dashboard:dev": "//dashboard:gobazel-dashboard-image",
+    },
+    template = ":dashboard.yaml",
 )

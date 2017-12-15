@@ -3,9 +3,11 @@ package cmd
 import (
 	"bytes"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -28,21 +30,58 @@ func init() {
 	createCmd.Flags().String("addr", "", "Grafana host address e.g. http://host:port")
 	createCmd.Flags().String("resource", "/api/dashboards/db", "dashboard resource path")
 	createCmd.Flags().String("path", "", "path to local dashboard folder")
+	createCmd.Flags().String("health", "/api/health", "health api endpoint used to test for grafana availability")
 
 	// bind to viper
 	viper.BindPFlag("grafana.addr", createCmd.Flags().Lookup("addr"))
-	viper.BindPFlag("grafana.resource", createCmd.Flags().Lookup("resource"))
+	viper.BindPFlag("grafana.dashboardPath", createCmd.Flags().Lookup("resource"))
 	viper.BindPFlag("dashboards.path", createCmd.Flags().Lookup("path"))
+	viper.BindPFlag("grafana.healthPath", createCmd.Flags().Lookup("health"))
 }
 
 func create() {
 	fmt.Println("create dashboard")
-
-	// read path
-	path := viper.GetString("dashboards.path")
+	// read values
 	addr := viper.GetString("grafana.addr")
-	resource := viper.GetString("grafana.resource")
-	files, err := ioutil.ReadDir(path)
+	dashboardPath := viper.GetString("grafana.dashboardPath")
+	healthPath := viper.GetString("grafana.healthPath")
+	filePath := viper.GetString("dashboards.filePath")
+
+	err := waitForGrafana(addr, healthPath)
+	if err != nil {
+		fmt.Printf("grafana not responding. is it running at %s, errror: %s", addr, err.Error())
+	} else {
+		postDashboard(addr, dashboardPath, filePath)
+	}
+
+}
+
+func waitForGrafana(addr string, healthPath string) error {
+	fmt.Println("waiting for grafana")
+
+	ticker := time.NewTicker(time.Second * 2)
+	ticks := 0
+	for _ = range ticker.C {
+		resp, err := http.Get(addr + healthPath)
+		if err != nil {
+			fmt.Printf("error waiting for grafana: %s\n", err.Error())
+		} else {
+			if resp.StatusCode == http.StatusOK {
+				// got a response
+				ticker.Stop()
+				break
+			}
+			if ticks > 2 {
+				ticker.Stop()
+				return errors.New("grafana did not respond")
+			}
+		}
+	}
+	return nil
+}
+
+func postDashboard(addr string, dashboardPath string, filePath string) {
+	files, err := ioutil.ReadDir(filePath)
 	if err != nil {
 		fmt.Printf("Error reading dashboards: %s\n", err.Error())
 		return
@@ -51,12 +90,12 @@ func create() {
 	client := http.DefaultClient
 	for _, file := range files {
 		fmt.Printf("Posting %s", file.Name())
-		curFile := fmt.Sprintf("%s/%s", path, file.Name())
+		curFile := fmt.Sprintf("%s/%s", filePath, file.Name())
 		dash, err := ioutil.ReadFile(curFile)
 		if err != nil {
 			fmt.Printf("Error reading dashboard file: %s\n", err.Error())
 		}
-		req, err := http.NewRequest("POST", addr+resource, bytes.NewReader(dash))
+		req, err := http.NewRequest("POST", addr+dashboardPath, bytes.NewReader(dash))
 		req.Header.Set("Content-Type", "application/json")
 		req = withAuth(req)
 		resp, err := client.Do(req)
