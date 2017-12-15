@@ -148,3 +148,5 @@ kubectl port-forward --namespace gobazel \
 $(kubectl get po -n gobazel | grep registry-proxy | \
 awk '{print $1;}') 5000:80
 ```
+
+kubectl get pods -a -n gobazel -o json  | jq -r '.items[] | select(.status.phase == "Running") or ([ .status.conditions[] | select(.type == "Ready" and .status == "False") ] | length ) == 1 ) | .metadata.namespace + "/" + .metadata.name'
