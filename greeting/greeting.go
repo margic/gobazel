@@ -5,5 +5,5 @@ import (
 )
 
 func greeting() string {
-	return "service1 " + time.Now().String()
+	return "Hello world at: " + time.Now().String()
 }

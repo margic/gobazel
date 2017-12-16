@@ -2,26 +2,26 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
 go_image(
-    name = "service1-image",
-    binary = ":service1",
+    name = "greeting-image",
+    binary = ":greeting",
     visibility = ["//visibility:public"],
 )
 
 go_binary(
-    name = "service1",
+    name = "greeting",
     embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/service1",
+    importpath = "github.com/margic/gobazel/greeting",
     visibility = ["//visibility:public"],
 )
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 container_push(
-    name = "push-service1-image",
+    name = "push-greeting-image",
     format = "Docker",
-    image = ":service1-image",
+    image = ":greeting-image",
     registry = "localhost:5000",
-    repository = "gobazel-service1",
+    repository = "gobazel-greeting",
     tag = "dev",
     visibility = ["//visibility:public"],
 )
@@ -30,7 +30,7 @@ go_test(
     name = "go_default_test",
     srcs = ["greeting_test.go"],
     embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/service1",
+    importpath = "github.com/margic/gobazel/greeting",
     deps = ["//vendor/github.com/stretchr/testify/assert:go_default_library"],
 )
 
@@ -40,7 +40,7 @@ go_library(
         "greeting.go",
         "main.go",
     ],
-    importpath = "github.com/margic/gobazel/service1",
+    importpath = "github.com/margic/gobazel/greeting",
     visibility = ["//visibility:private"],
     deps = [
         "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",

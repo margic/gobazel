@@ -38,12 +38,12 @@ deleteTracing:
 # Services deploys all the services
 .PHONY: applyServices
 applyServices:
-	- bazel run --cpu=k8 //deploy/dev:deploy-service1.apply
+	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.apply
 	- bazel run --cpu=k8 //deploy/dev:deploy-service2.apply
 
 .PHONY: deleteServices
 deleteServices:
-	- bazel run --cpu=k8 //deploy/dev:deploy-service1.delete
+	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.delete
 	- bazel run --cpu=k8 //deploy/dev:deploy-service2.delete
 
 
