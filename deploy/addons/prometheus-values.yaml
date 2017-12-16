@@ -127,13 +127,13 @@ alertmanager:
   ## alertmanager resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
-    # limits:
-    #   cpu: 10m
-    #   memory: 32Mi
-    # requests:
-    #   cpu: 10m
-    #   memory: 32Mi
+  resources:
+    limits:
+      cpu: 10m
+      memory: 32Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
 
   service:
     annotations: {}
@@ -286,13 +286,13 @@ nodeExporter:
   ## node-exporter resource limits & requests
   ## Ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
-    # limits:
-    #   cpu: 200m
-    #   memory: 50Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 30Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 50Mi
+    requests:
+      cpu: 100m
+      memory: 30Mi
 
   service:
     annotations:
@@ -450,13 +450,13 @@ server:
   ## Prometheus server resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
-    # limits:
-    #   cpu: 500m
-    #   memory: 512Mi
-    # requests:
-    #   cpu: 500m
-    #   memory: 512Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
   service:
     annotations: {}
@@ -540,13 +540,13 @@ pushgateway:
   ## pushgateway resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
-    # limits:
-    #   cpu: 10m
-    #   memory: 32Mi
-    # requests:
-    #   cpu: 10m
-    #   memory: 32Mi
+  resources:
+    limits:
+      cpu: 10m
+      memory: 32Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
 
   service:
     annotations:

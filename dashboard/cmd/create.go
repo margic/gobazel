@@ -107,7 +107,13 @@ func postDashboard(addr string, dashboardPath string, filePath string) {
 		if err != nil {
 			fmt.Printf("Error reading dashboard file: %s\n", err.Error())
 		}
-		req, err := http.NewRequest("POST", addr+dashboardPath, bytes.NewReader(dash))
+		buf := bytes.NewBufferString(`{
+			"dashboard": `)
+		buf.Write(dash)
+		buf.WriteString(`,
+			"overwrite": true
+			}`)
+		req, err := http.NewRequest("POST", addr+dashboardPath, buf)
 		req.Header.Set("Content-Type", "application/json")
 		req = withAuth(req)
 		resp, err := client.Do(req)
