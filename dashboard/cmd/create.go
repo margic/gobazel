@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -59,22 +60,33 @@ func create() {
 func waitForGrafana(addr string, healthPath string) error {
 	fmt.Println("waiting for grafana")
 
-	ticker := time.NewTicker(time.Second * 2)
+	ticker := time.NewTicker(time.Second * 5)
 	ticks := 0
 	for _ = range ticker.C {
+		ticks++
+		fmt.Printf("testing connectivity, addr: %s, path: %s\n", addr, healthPath)
 		resp, err := http.Get(addr + healthPath)
 		if err != nil {
 			fmt.Printf("error waiting for grafana: %s\n", err.Error())
 		} else {
+			fmt.Printf("got a response")
 			if resp.StatusCode == http.StatusOK {
-				// got a response
-				ticker.Stop()
-				break
+				defer resp.Body.Close()
+				body, err := ioutil.ReadAll(resp.Body)
+				if err == nil {
+					// got a response
+					fmt.Printf("response\n status: %s\n body: %s\n", resp.Status, body)
+					// check content type
+					if strings.Contains(resp.Header.Get("Content-Type"), "application/json") {
+						ticker.Stop()
+						return nil
+					}
+				}
 			}
-			if ticks > 2 {
-				ticker.Stop()
-				return errors.New("grafana did not respond")
-			}
+		}
+		if ticks > 20 {
+			ticker.Stop()
+			return errors.New("grafana did not respond")
 		}
 	}
 	return nil

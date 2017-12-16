@@ -1,0 +1,46 @@
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+
+k8s_deploy(
+    name = "deploy-ingress-rbac",
+    template = ":ingress-rbac.yaml",
+)
+
+k8s_deploy(
+    name = "deploy-ingress-pod",
+    template = ":ingress-pod.yaml",
+)
+
+k8s_deploy(
+    name = "deploy-ingress-ui",
+    template = ":ingress-ui.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-namespace",
+  template = ":namespace.yaml",
+)
+
+k8s_deploy(
+  name = "deploy-registry",
+  template = ":registry.yaml",
+)
+
+k8s_objects(
+   name = "create",
+   objects = [
+    ":deploy-namespace.apply",
+    ":deploy-ingress-rbac.apply",
+    ":deploy-ingress-pod.apply",
+    ":deploy-ingress-ui.apply",
+    ":deploy-registry.apply",
+   ]
+)
+
+
+k8s_objects(
+   name = "delete",
+   objects = [
+    ":deploy-namespace.delete",
+   ]
+)
