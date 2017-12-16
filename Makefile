@@ -14,44 +14,57 @@ delete:
 applyMetrics:
 	helm install --namespace gobazel --name prometheus -f deploy/addons/prometheus-values.yaml stable/prometheus
 	helm install --namespace gobazel --name grafana -f deploy/addons/grafana-values.yaml stable/grafana
-	bazel run --cpu k8 //deploy/addons:apply-metrics
+	bazel run --cpu k8 //deploy/addons:deploy-metrics.apply
 	bazel run --cpu k8 //dashboard:deploy-dashboard.apply
 
 
 .PHONY: deleteMetrics
 deleteMetrics:
-	- bazel run --cpu k8 //deploy/addons:delete-metrics
+	- bazel run --cpu k8 //deploy/addons:deploy-metrics.delete
 	- bazel run --cpu k8 //dashboard:deploy-dashboard.delete
 	- helm del --purge grafana
 	- helm del --purge prometheus
 
-
-
-
 # Tracing - enable the tracing addon
 .PHONY: applyTracing
 applyTracing:
-	bazel run --cpu k8 //deploy/addons:apply-tracing.apply
+	bazel run --cpu k8 //deploy/addons:deploy-tracing.apply
 
 .PHONY: deleteTracing
 deleteTracing:
-	bazel run --cpu k8 //deploy/addons:apply-tracing.delete
+	bazel run --cpu k8 //deploy/addons:deploy-tracing.delete
 
 
 # Services deploys all the services
-.PHONY: deploy
-deploy:
-	bazel run --cpu=k8 //deploy/devd
+.PHONY: applyServices
+applyServices:
+	- bazel run --cpu=k8 //deploy/dev:deploy-service1.apply
+	- bazel run --cpu=k8 //deploy/dev:deploy-service2.apply
+
+.PHONY: deleteServices
+deleteServices:
+	- bazel run --cpu=k8 //deploy/dev:deploy-service1.delete
+	- bazel run --cpu=k8 //deploy/dev:deploy-service2.delete
+
+
+
+
+#############################
+# Some useful utility targets
+#############################
 
 # syncs the system time with minikube
 .PHONY: sync
 sync:
-	minikube ssh -- docker run -i --rm --privileged --pid=host debian nsenter -t 1 -m -u -n -i date -u $(date -u +%m%d%H%M%Y)
+	minikube ssh -- docker run -i --rm --privileged --pid=host debian nsenter -t 1 -m -u -n -i date -s @$(shell date -u +%s)
+
+#$(date -u +'%s')
 
 .PHONY: clean
 clean:
 	baezl clean
 
+# Configures the workspace kube folder with certs from minikube
 .PHONY: config
 config:
 	deploy/local/kubectl-config.sh

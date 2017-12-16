@@ -17,17 +17,3 @@ k8s_deploy(
   },
 )
 
-k8s_objects(
-  name = "apply-services",
-  objects = [
-    "//deploy:deploy-service1.apply",
-    "//deploy:deploy-service2.apply",
-  ]
-)
-k8s_objects(
-  name = "delete-services",
-  objects = [
-    "//deploy:deploy-service1.delete",
-    "//deploy:deploy-service2.delete",
-  ]
-)

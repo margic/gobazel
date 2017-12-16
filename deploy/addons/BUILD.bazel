@@ -11,29 +11,3 @@ k8s_deploy(
   template = ":tracing.yaml",
 )
 
-k8s_objects(
-   name = "apply-tracing",
-   objects = [
-    ":deploy-tracing.apply",
-   ]
-)
-k8s_objects(
-   name = "delete-tracing",
-   objects = [
-    ":deploy-tracing.delete",
-   ]
-)
-
-k8s_objects(
-   name = "apply-metrics",
-   objects = [
-    ":deploy-metrics.apply",
-   ]
-)
-k8s_objects(
-   name = "delete-metrics",
-   objects = [
-    ":deploy-metrics.delete",
-   ]
-)
-
