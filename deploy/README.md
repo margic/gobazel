@@ -55,7 +55,7 @@ and the minikube docker daemon to access the registry deployed in the namespace
 
 ```
 kubectl port-forward --namespace gobazel \
-$(kubectl get po -n gobazel | grep registry-proxy | \
+$(kubectl get po -n gobazel | grep "^registry-proxy.*Running" | \
 awk '{print $1;}') 5000:80
 ```
 

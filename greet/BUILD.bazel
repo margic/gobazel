@@ -2,34 +2,34 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 
 go_image(
-    name = "service2-image",
-    binary = ":service2",
+    name = "greet-image",
+    binary = ":greet",
     visibility = ["//visibility:public"],
 )
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 
 container_push(
-    name = "push-service2-image",
+    name = "push-greet-image",
     format = "Docker",
-    image = ":service2-image",
+    image = ":greet-image",
     registry = "localhost:5000",
-    repository = "gobazel-service2",
+    repository = "gobazel-greet",
     tag = "dev",
     visibility = ["//visibility:public"],
 )
 
 go_binary(
-    name = "service2",
+    name = "greet",
     embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/service2",
+    importpath = "github.com/margic/gobazel/greet",
     visibility = ["//visibility:public"],
 )
 
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
-    importpath = "github.com/margic/gobazel/service2",
+    importpath = "github.com/margic/gobazel/greet",
     visibility = ["//visibility:private"],
     deps = [
         "//vendor/github.com/go-kit/kit/endpoint:go_default_library",

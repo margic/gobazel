@@ -71,4 +71,8 @@ why time sync issue happens
 https://github.com/kubernetes/minikube/issues/1378
 
 how to work arond
-`minikube ssh -- docker run -i --rm --privileged --pid=host debian nsenter -t 1 -m -u -n -i date -u $(date -u +%m%d%H%M%Y)`
+`make sync`
+
+Testing with vegeta
+
+`vegeta attack -rate=100 -duration=10s -targets=testdata/targets.txt | vegeta report`

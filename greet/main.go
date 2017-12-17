@@ -42,7 +42,7 @@ type GreetingService interface {
 type greetingService struct{}
 
 func (greetingService) Greeting(_ context.Context) (string, error) {
-	return "service2 " + time.Now().String(), nil
+	return "greet " + time.Now().String(), nil
 }
 
 // greetingRequest is empty as there are no params for request but type required

@@ -13,8 +13,8 @@
 
 bazel-*
 
-service1/service1
-service2/service2
+greeting/greeting
+greet/greet
 dashboard/dashboard
 
 

@@ -1,2 +1,1 @@
-GET http://gobazel.minikube/greeting
-GET http://gobazel.minikube/service2
+GET http://gobazel.minikube/greet
