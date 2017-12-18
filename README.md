@@ -76,3 +76,10 @@ how to work arond
 Testing with vegeta
 
 `vegeta attack -rate=100 -duration=10s -targets=testdata/targets.txt | vegeta report`
+
+
+## Hosts file
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost 
+192.168.64.19	kubernetes tracing.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube

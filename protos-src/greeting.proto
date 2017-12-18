@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package protos;
+
+service Greeting {
+    rpc Greeting(Empty) returns (GreetingResponse);
+}
+
+message GreetingResponse {
+    string Greeting = 1;
+    string Err = 2; // use string for error
+}
+
+message Empty{
+}

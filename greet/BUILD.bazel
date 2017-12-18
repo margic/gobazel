@@ -28,11 +28,18 @@ go_binary(
 
 go_library(
     name = "go_default_library",
-    srcs = ["main.go"],
+    srcs = [
+        "greetingtransport.go",
+        "main.go",
+    ],
     importpath = "github.com/margic/gobazel/greet",
     visibility = ["//visibility:private"],
     deps = [
+        "//protos:go_default_library",
         "//vendor/github.com/go-kit/kit/endpoint:go_default_library",
+        "//vendor/github.com/go-kit/kit/transport/grpc:go_default_library",
         "//vendor/github.com/go-kit/kit/transport/http:go_default_library",
+        "//vendor/github.com/spf13/pflag:go_default_library",
+        "//vendor/google.golang.org/grpc:go_default_library",
     ],
 )

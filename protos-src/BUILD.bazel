@@ -1,0 +1,3 @@
+# gazelle:ignore
+# proto build currently do not support vendored packages properly. so have source files in one
+# folder with no gazelle so only the outputted go files are built by bazel

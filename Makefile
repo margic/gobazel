@@ -62,9 +62,16 @@ sync:
 
 .PHONY: clean
 clean:
-	baezl clean
+	bazel clean
+	rm -rf bazel-*
 
 # Configures the workspace kube folder with certs from minikube
 .PHONY: config
 config:
 	deploy/local/kubectl-config.sh
+
+# Genereate protobuf files manually
+.PHONY: generate
+generate:
+	protoc -I protos-src/ --go_out=plugins=grpc:protos protos-src/*.proto
+	bazel run //:gazelle
