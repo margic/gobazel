@@ -40,6 +40,7 @@ go_library(
         "//vendor/github.com/go-kit/kit/transport/grpc:go_default_library",
         "//vendor/github.com/go-kit/kit/transport/http:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
+        "//vendor/go.uber.org/zap:go_default_library",
         "//vendor/google.golang.org/grpc:go_default_library",
     ],
 )

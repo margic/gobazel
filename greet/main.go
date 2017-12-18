@@ -4,12 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/margic/gobazel/protos"
 	flag "github.com/spf13/pflag"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
 	httptransport "github.com/go-kit/kit/transport/http"
@@ -19,9 +21,19 @@ func main() {
 	var addr string
 	flag.StringVarP(&addr, "greetingAddr", "g", "greeting.gobazel", "Address of Greeting Service, defaults to greeting.gobazel")
 	flag.Parse()
+
+	logger, err := zap.NewProduction()
+	if err != nil {
+		fmt.Printf("Unable to create logger: %s\n", err)
+		os.Exit(1)
+	}
+	logger.Info("starting greet service")
+
 	clientConn, err := grpc.Dial(addr, grpc.WithInsecure())
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("error creating connection to greeting services",
+			zap.String("error", err.Error()),
+			zap.String("address", addr))
 	}
 
 	svc := greet{
@@ -37,7 +49,7 @@ func main() {
 	)
 
 	http.Handle("/", greetHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	logger.Fatal(http.ListenAndServe(":8080", nil).Error())
 }
 
 func decodegreetRequest(_ context.Context, r *http.Request) (interface{}, error) {

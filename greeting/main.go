@@ -19,7 +19,7 @@ import (
 
 func main() {
 	var addr string
-	flag.StringVarP(&addr, "listen", "l", ":8080", "address greeting service is listening on")
+	flag.StringVarP(&addr, "listen", "l", ":8081", "address greeting service is listening on")
 	flag.Parse()
 
 	logger, err := zap.NewProduction()
