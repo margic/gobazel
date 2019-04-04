@@ -5,7 +5,11 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/margic/gobazel/commander",
     visibility = ["//visibility:private"],
-    deps = ["//commander/cmd:go_default_library"],
+    deps = [
+        "//commander/cmd:go_default_library",
+        "//vendor/github.com/spf13/pflag:go_default_library",
+        "//vendor/github.com/spf13/viper:go_default_library",
+    ],
 )
 
 go_binary(

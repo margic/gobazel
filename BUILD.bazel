@@ -1,7 +1,12 @@
-load("@io_bazel_rules_go//go:def.bzl", "gazelle")
+load("@bazel_gazelle//:def.bzl", "gazelle")
 
 gazelle(
     name = "gazelle",
+    command = "fix",
     external = "vendored",
+    extra_args = [
+        "-build_file_name",
+        "BUILD.bazel",
+    ],
     prefix = "github.com/margic/gobazel",
 )

@@ -12,14 +12,28 @@ by default. Run `bazel run //:gazelle` to automatically add build files to vendo
 pachages.
 
 
+To make using the system way easier it's important to map the minikube ip address to any names used. Get the minikube ip address by issuing `minikube ip` and then update hosts file
+
 /etc/hosts host entry
 `minikubeIP      kubernetes registry.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube`
 
 example:
 `192.168.64.19	kubernetes registry.minikube prometheus.minikube grafana.minikube gobazel.minikube traefik.minikube`
 
+## Minikube
+Install minikube check the current releases on https://github.com/kubernetes/minikube/releases/ install is like:
+`curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.0.0/minikube-darwin-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube`
+
+The project depends on minikube running. 
+`minikube start --vm-driver=hyperkit` on mac with hyperkit hypervisor
+To stop minikube run
+`minikube stop`
+To start fresh delete the current cluster using 
+`minikube delete` then issue start command
 
 
+
+# Notes
 Open files error
 For OS X Sierra (10.12.X) you need to:
 

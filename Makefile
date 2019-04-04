@@ -34,6 +34,14 @@ applyTracing:
 deleteTracing:
 	bazel run --cpu k8 //deploy/addons:deploy-tracing.delete
 
+# Logging - enable the logging addon
+.PHONY: applyLogging
+applyLogging:
+	bazel run --cpu k8 //deploy/addons:deployLogging
+
+.PHONY: deleteLogging
+deleteLogging:
+	bazel run --cpu k8 //deploy/addons:deleteLogging
 
 # Services deploys all the services
 .PHONY: applyServices
@@ -52,6 +60,7 @@ deleteServices:
 #############################
 # Some useful utility targets
 #############################
+
 
 # syncs the system time with minikube
 .PHONY: sync
@@ -73,5 +82,6 @@ config:
 # Genereate protobuf files manually
 .PHONY: generate
 generate:
-	protoc -I protos-src/ --go_out=plugins=grpc:protos protos-src/*.proto
+	# commented out protoc now part of bazel to generate protos
+	# protoc -I protos-src/ --go_out=plugins=grpc:protos protos-src/*.proto
 	bazel run //:gazelle

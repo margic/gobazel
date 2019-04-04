@@ -2,17 +2,19 @@ load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
 load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
 k8s_deploy(
-  name = "deploy-greeting",
-  template = ":greeting.yaml",
-  images = {
-    "localhost:5000/gobazel-greeting:dev": "//greeting:greeting-image"
-  },
+    name = "deploy-greeting",
+    images = {
+        "localhost:5000/gobazel-greeting:dev": "//greeting:greeting-image",
+    },
+    template = ":greeting.yaml",
+    namespace = "gobazel",
 )
 
 k8s_deploy(
-  name = "deploy-greet",
-  template = ":greet.yaml",
-  images = {
-    "localhost:5000/gobazel-greet:dev": "//greet:greet-image"
-  },
+    name = "deploy-greet",
+    images = {
+        "localhost:5000/gobazel-greet:dev": "//greet:greet-image",
+    },
+    template = ":greet.yaml",
+    namespace = "gobazel",
 )

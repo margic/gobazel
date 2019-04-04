@@ -10,7 +10,6 @@ go_image(
 go_binary(
     name = "greeting",
     embed = [":go_default_library"],
-    importpath = "github.com/margic/gobazel/greeting",
     visibility = ["//visibility:public"],
 )
 
@@ -37,6 +36,6 @@ go_library(
         "//vendor/github.com/prometheus/client_golang/prometheus/promhttp:go_default_library",
         "//vendor/github.com/spf13/pflag:go_default_library",
         "//vendor/go.uber.org/zap:go_default_library",
-        "//vendor/google.golang.org/grpc:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
     ],
 )
