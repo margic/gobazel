@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	uuid "github.com/satori/go.uuid"
 	flag "github.com/spf13/pflag"
 	"google.golang.org/grpc"
 
@@ -27,7 +28,7 @@ func main() {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)
 	}
-	logger.Info("starting greeting service")
+	logger.Info("Starting greeting service")
 
 	myCounter := prometheus.NewCounter(
 		prometheus.CounterOpts{
@@ -50,16 +51,35 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	protos.RegisterGreetingServer(grpcServer, &greetingServer{})
+	protos.RegisterGreetingServer(grpcServer, &greetingServer{
+		l: logger,
+	})
 	grpcServer.Serve(lis)
 }
 
 type greetingServer struct {
+	l *zap.Logger
 }
 
-func (gs *greetingServer) Greeting(ctx context.Context, _ *protos.Empty) (*protos.GreetingResponse, error) {
-	return &protos.GreetingResponse{
-		Greeting: "Hello world at: " + time.Now().String(),
-		Err:      "",
-	}, nil
+func (gs *greetingServer) Greeting(ctx context.Context, req *protos.GreetingRequest) (*protos.GreetingResponse, error) {
+	res := &protos.GreetingResponse{
+		Greeting:      "Hello " + req.Name,
+		ServerTime:    time.Now().String(),
+		MessageID:     newMessageID(),
+		CorrelationID: req.MessageID,
+		Hostname:      os.Getenv("HOSTNAME"),
+		Err:           "",
+	}
+	gs.l.Info("Greeting Response",
+		zap.String("name", req.Name),
+		zap.String("greeting", res.Greeting),
+		zap.String("messageID", res.MessageID),
+		zap.String("correlationID", res.CorrelationID),
+	)
+	return res, nil
+}
+
+func newMessageID() string {
+	id := uuid.NewV1()
+	return id.String()
 }

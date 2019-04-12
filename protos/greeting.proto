@@ -3,13 +3,19 @@ syntax = "proto3";
 package protos;
 
 service Greeting {
-    rpc Greeting(Empty) returns (GreetingResponse);
+    rpc Greeting(GreetingRequest) returns (GreetingResponse);
 }
 
 message GreetingResponse {
-    string Greeting = 1;
-    string Err = 2; // use string for error
+    string MessageID = 1;
+    string CorrelationID = 2;
+    string Greeting = 3;
+    string Hostname = 4;
+    string ServerTime = 5;
+    string Err = 6; // use string for error
 }
 
-message Empty{
+message GreetingRequest{
+    string MessageID = 1;
+    string Name = 2;
 }

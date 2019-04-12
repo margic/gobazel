@@ -17,7 +17,8 @@ greeting/greeting
 greet/greet
 dashboard/dashboard
 
-protos/*.pb.go
+# generated protobuf files
+*.pb.go
 
 # check in vendor for trouble shooting
 vendor
