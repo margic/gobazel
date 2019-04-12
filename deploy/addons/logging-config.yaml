@@ -2,7 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: fluent-bit-config
-    namespace: logging
     labels:
         k8s-app: fluent-bit
 data:
@@ -10,8 +9,8 @@ data:
     # ======================================================
     fluent-bit.conf: |
         [SERVICE]
-            Flush         2
-            Log_Level     info
+            Flush         1
+            Log_Level     debug
             Daemon        off
             Parsers_File  parsers.conf
             HTTP_Server   On
@@ -27,6 +26,7 @@ data:
             Name              tail
             Tag               kube.*
             Path              /var/log/containers/*.log
+            Exclude_Path      *kube-system*.log
             Parser            docker
             DB                /var/log/flb_kube.db
             Mem_Buf_Limit     5MB
@@ -40,11 +40,14 @@ data:
             Kube_URL            https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT_HTTPS}
             Merge_Log           On
             K8S-Logging.Parser  On
+            tls.verify          Off
+            K8S-Logging.Exclude On
 
     output-timber.conf: |
         [OUTPUT]
             Name            http
             Match           *
+            tls             On
             Host            logs.timber.io
             Port            443
             URI     /sources/14331/frames
@@ -55,38 +58,6 @@ data:
 
     parsers.conf: |
         [PARSER]
-            Name   apache
-            Format regex
-            Regex  ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
-            Time_Key time
-            Time_Format %d/%b/%Y:%H:%M:%S %z
-
-        [PARSER]
-            Name   apache2
-            Format regex
-            Regex  ^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^ ]*) +\S*)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
-            Time_Key time
-            Time_Format %d/%b/%Y:%H:%M:%S %z
-
-        [PARSER]
-            Name   apache_error
-            Format regex
-            Regex  ^\[[^ ]* (?<time>[^\]]*)\] \[(?<level>[^\]]*)\](?: \[pid (?<pid>[^\]]*)\])?( \[client (?<client>[^\]]*)\])? (?<message>.*)$
-
-        [PARSER]
-            Name   nginx
-            Format regex
-            Regex ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")?$
-            Time_Key time
-            Time_Format %d/%b/%Y:%H:%M:%S %z
-
-        [PARSER]
-            Name   json
-            Format json
-            Time_Key time
-            Time_Format %d/%b/%Y:%H:%M:%S %z
-
-        [PARSER]
             Name        docker
             Format      json
             Time_Key    time
@@ -96,9 +67,3 @@ data:
             # =============|==================|=================
             Decode_Field_As   escaped    log
 
-        [PARSER]
-            Name        syslog
-            Format      regex
-            Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
-            Time_Key    time
-            Time_Format %b %d %H:%M:%S

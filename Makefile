@@ -82,6 +82,5 @@ config:
 # Genereate protobuf files manually
 .PHONY: generate
 generate:
-	# commented out protoc now part of bazel to generate protos
-	# protoc -I protos-src/ --go_out=plugins=grpc:protos protos-src/*.proto
+	protoc -I protos/ --go_out=plugins=grpc:protos protos/*.proto
 	bazel run //:gazelle

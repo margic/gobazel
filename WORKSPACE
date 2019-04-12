@@ -76,4 +76,5 @@ k8s_defaults(
     # This is the name of the cluster as it appears in:
     #   kubectl config current-context
     cluster = "minikube",
+    namespace = "gobazel",
 )

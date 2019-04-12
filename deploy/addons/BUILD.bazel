@@ -3,56 +3,47 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
 k8s_deploy(
     name = "deploy-metrics",
-    namespace = "gobazel",
     template = ":metrics.yaml",
 )
 
 k8s_deploy(
     name = "deploy-tracing",
-    namespace = "gobazel",
     template = ":tracing.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-namespace",
-    namespace = "kube-system",
     template = ":logging-namespace.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-account",
-    namespace = "logging",
     template = ":logging-account.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-role",
-    namespace = "logging",
     template = ":logging-role.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-role-binding",
-    namespace = "logging",
     template = ":logging-role-binding.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-config",
-    namespace = "logging",
     template = ":logging-config.yaml",
 )
 
 k8s_deploy(
     name = "deploy-logging-daemonset",
-    namespace = "logging",
     template = ":logging-daemonset.yaml",
 )
 
 k8s_objects(
     name = "deployLogging",
     objects = [
-        ":deploy-logging-namespace.apply",
         ":deploy-logging-account.apply",
         ":deploy-logging-role.apply",
         ":deploy-logging-role-binding.apply",
@@ -64,6 +55,10 @@ k8s_objects(
 k8s_objects(
     name = "deleteLogging",
     objects = [
-        ":deploy-logging-namespace.delete",
+        ":deploy-logging-daemonset.delete",
+        ":deploy-logging-config.delete",
+        ":deploy-logging-role-binding.delete",
+        ":deploy-logging-role.delete",
+        ":deploy-logging-account.delete",
     ],
 )

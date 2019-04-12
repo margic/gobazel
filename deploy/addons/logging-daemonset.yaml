@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: fluent-bit
-  namespace: logging
   labels:
     k8s-app: fluent-bit-logging
     version: v1
@@ -18,6 +17,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "2020"
         prometheus.io/path: /api/v1/metrics/prometheus
+        fluentbit.io/exclude: "true"
     spec:
       containers:
         - name: fluent-bit
@@ -25,11 +25,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 2020
-          env:
-            - name: FLUENT_ELASTICSEARCH_HOST
-              value: "elasticsearch"
-            - name: FLUENT_ELASTICSEARCH_PORT
-              value: "9200"
           volumeMounts:
             - name: varlog
               mountPath: /var/log

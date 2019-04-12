@@ -1,9 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/margic/gobazel/protos"
+	"google.golang.org/grpc"
 
 	flag "github.com/spf13/pflag"
 	"go.uber.org/zap"
@@ -14,94 +18,48 @@ func main() {
 	flag.StringVarP(&addr, "greetingAddr", "g", "greeting.gobazel", "Address of Greeting Service, defaults to greeting.gobazel")
 	flag.Parse()
 
-	logger, err := zap.NewProduction()
+	logger, err := zap.NewProduction(zap.Fields(zap.String("Service", "Greet")))
+
 	if err != nil {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)
 	}
 	logger.Info("starting greet service")
 
-	// clientConn, err := grpc.Dial(addr, grpc.WithInsecure())
-	// if err != nil {
-	// 	logger.Fatal("error creating connection to greeting services",
-	// 		zap.String("error", err.Error()),
-	// 		zap.String("address", addr))
-	// }
-
-	// svc := greet{
-	// 	greeting: greetingProxy{
-	// 		greeting: makeGreetingEndpoint(clientConn),
-	// 	},
-	// }
-
-	//http.Handle("/", greetHandler)
+	http.HandleFunc("/", handler(logger))
 	logger.Fatal(http.ListenAndServe(":8080", nil).Error())
 }
 
-// func decodegreetRequest(_ context.Context, r *http.Request) (interface{}, error) {
-// 	request := greetRequest{}
-// 	return request, nil
-// }
+func handler(l *zap.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		conn, err := grpc.Dial("greeting.gobazel:80", grpc.WithInsecure())
+		if err != nil {
+			l.Error("Error connected to greeting service", zap.Error(err))
+		}
+		defer conn.Close()
+		c := protos.NewGreetingClient(conn)
+		g, err := c.Greeting(r.Context(), &protos.Empty{})
+		if err != nil {
+			l.Error("error calling grpc", zap.Error(err))
+		}
+		greeting := &greetResponse{
+			Greet:    g.Greeting,
+			Hostname: os.Getenv("HOSTNAME"),
+		}
+		enc := json.NewEncoder(w)
+		w.Header().Add("Content-Type", "application/json")
+		enc.Encode(greeting)
+		l.Info("Handler returned response", zap.String("greet", greeting.Greet))
+	}
+}
 
-// func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
-// 	return json.NewEncoder(w).Encode(response)
-// }
+// greetRequest is empty as there are no params for request but type required
+type greetRequest struct {
+}
 
-// // greeter returns a greet
-// type greeter interface {
-// 	greet(context.Context) (string, error)
-// }
-
-// // greet a type that implementes greetService
-// type greet struct {
-// 	greeting greetingProxy
-// }
-
-// func (g greet) greet(ctx context.Context) (string, error) {
-// 	resp, err := g.greeting.Greeting(ctx)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	return resp, nil
-// }
-
-// // greetRequest is empty as there are no params for request but type required
-// type greetRequest struct {
-// }
-
-// // greetResponse contains the response
-// type greetResponse struct {
-// 	Greet string `json:"greet"`
-// 	Err   string `json:"err,omitempty"` // errors don't JSON-marshal, so we use a string
-// }
-
-// // makegreetEndpoint wrap service with endpoint
-// func makegreetEndpoint(svc greet) endpoint.Endpoint {
-// 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-// 		//req := request.(greetRequest) ignore request but it would normally be here
-// 		v, err := svc.greet(ctx)
-// 		if err != nil {
-// 			return greetResponse{v, err.Error()}, nil
-// 		}
-// 		return greetResponse{v, ""}, nil
-// 	}
-// }
-
-// // Add cliet call to greeting service
-// // greeting proxy is the proxy around the greeting service we will call
-// type greetingProxy struct {
-// 	greeting endpoint.Endpoint
-// }
-
-// func (gp greetingProxy) Greeting(ctx context.Context) (string, error) {
-// 	// really all we are doing here is unwrapping the grpc response values
-// 	response, err := gp.greeting(ctx, protos.Empty{})
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	resp := response.(protos.GreetingResponse)
-// 	if resp.Err != "" {
-// 		return "", errors.New(resp.Err)
-// 	}
-// 	return "", nil
-// }
+// greetResponse contains the response
+type greetResponse struct {
+	Greet    string `json:"greet"`
+	Hostname string `json:"hostname"`
+	Err      string `json:"err,omitempty"` // errors don't JSON-marshal, so we use a string
+}

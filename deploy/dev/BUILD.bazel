@@ -7,7 +7,6 @@ k8s_deploy(
         "localhost:5000/gobazel-greeting:dev": "//greeting:greeting-image",
     },
     template = ":greeting.yaml",
-    namespace = "gobazel",
 )
 
 k8s_deploy(
@@ -16,5 +15,4 @@ k8s_deploy(
         "localhost:5000/gobazel-greet:dev": "//greet:greet-image",
     },
     template = ":greet.yaml",
-    namespace = "gobazel",
 )

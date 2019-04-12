@@ -3,37 +3,31 @@ load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
 k8s_deploy(
     name = "deploy-ingress-rbac",
-    namespace = "gobazel",
     template = ":ingress-rbac.yaml",
 )
 
 k8s_deploy(
     name = "deploy-ingress-pod",
-    namespace = "gobazel",
     template = ":ingress-pod.yaml",
 )
 
 k8s_deploy(
     name = "deploy-ingress-ui",
-    namespace = "gobazel",
     template = ":ingress-ui.yaml",
 )
 
 k8s_deploy(
     name = "deploy-namespace",
-    namespace = "default",
     template = ":namespace.yaml",
 )
 
 k8s_deploy(
     name = "deploy-registry",
-    namespace = "gobazel",
     template = ":registry.yaml",
 )
 
 k8s_deploy(
     name = "deploy-bazel-cache",
-    namespace = "gobazel",
     template = ":bazel-cache.yaml",
 )
 
