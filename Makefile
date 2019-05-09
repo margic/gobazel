@@ -17,7 +17,15 @@ applyMetrics:
 	bazel run --cpu k8 //deploy/addons:deploy-metrics.apply
 	bazel run --cpu k8 //dashboard:deploy-dashboard.apply
 
-
+# NATS
+.PHONY: applyNats
+applyNats:
+	bazel run --cpu k8 //deploy/addons:deployNats
+		
+.PHONY: deleteNats
+deleteNats:
+	bazel run --cpu k8 //deploy/addons:deleteNats
+	
 .PHONY: deleteMetrics
 deleteMetrics:
 	- bazel run --cpu k8 //deploy/addons:deploy-metrics.delete
@@ -48,12 +56,13 @@ deleteLogging:
 applyServices:
 	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.apply
 	- bazel run --cpu=k8 //deploy/dev:deploy-greet.apply
+	- bazel run --cpu=k8 //deploy/dev:deploy-launcher.apply
 
 .PHONY: deleteServices
 deleteServices:
 	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.delete
 	- bazel run --cpu=k8 //deploy/dev:deploy-greet.delete
-
+	- bazel run --cpu=k8 //deploy/dev:deploy-launcher.delete
 
 
 

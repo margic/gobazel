@@ -16,3 +16,11 @@ k8s_deploy(
     },
     template = ":greet.yaml",
 )
+
+k8s_deploy(
+    name = "deploy-launcher",
+    images = {
+        "localhost:5000/gobazel-launcher:dev": "//launcher:launcher-image",
+    },
+    template = ":launcher.yaml",
+)

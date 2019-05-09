@@ -1,0 +1,35 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/margic/gobazel/launcher",
+    visibility = ["//visibility:private"],
+    deps = ["//vendor/go.uber.org/zap:go_default_library"],
+)
+
+go_binary(
+    name = "launcher",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
+go_image(
+    name = "launcher-image",
+    binary = ":launcher",
+    visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+
+container_push(
+    name = "push-launcher-image",
+    format = "Docker",
+    image = ":launcher-image",
+    registry = "localhost:5000",
+    repository = "gobazel-launcher",
+    tag = "dev",
+    visibility = ["//visibility:public"],
+)

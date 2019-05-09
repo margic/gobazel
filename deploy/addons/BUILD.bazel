@@ -62,3 +62,29 @@ k8s_objects(
         ":deploy-logging-account.delete",
     ],
 )
+
+k8s_deploy(
+    name = "deploy-nats-prereqs",
+    template = ":nats-prereqs.yaml",
+)
+
+k8s_deploy(
+    name = "deploy-nats",
+    template = ":nats-deploy.yaml",
+)
+
+k8s_objects(
+    name = "deployNats",
+    objects = [
+        ":deploy-nats-prereqs.apply",
+        ":deploy-nats.apply",
+    ],
+)
+
+k8s_objects(
+    name = "deleteNats",
+    objects = [
+        ":deploy-nats.delete",
+        ":deploy-nats-prereqs.delete",
+    ],
+)

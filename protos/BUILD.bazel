@@ -3,7 +3,10 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "protos_proto",
-    srcs = ["greeting.proto"],
+    srcs = [
+        "greeting.proto",
+        "launcher.proto",
+    ],
     visibility = ["//visibility:public"],
 )
 

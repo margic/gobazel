@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package protos;
+
+service Launcher {
+    rpc LaunchJob(LaunchJobRequest) returns (LaunchJobResponse);
+}
+
+
+
+message LaunchJobRequest {
+    string MessageID = 1;
+    string Name = 2;
+}
+
+
+message LaunchJobResponse {
+    string MessageID = 1;
+    string Name = 2;
+}
