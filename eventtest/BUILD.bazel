@@ -1,8 +1,11 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
-    srcs = ["main.go"],
+    srcs = [
+        "handlers.go",
+        "main.go",
+    ],
     importpath = "github.com/margic/gobazel/eventtest",
     visibility = ["//visibility:private"],
     deps = [
@@ -36,4 +39,14 @@ container_push(
     repository = "gobazel-eventtest",
     tag = "dev",
     visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["handlers_test.go"],
+    embed = [":go_default_library"],
+    deps = [
+        "//vendor/github.com/stretchr/testify/assert:go_default_library",
+        "//vendor/go.uber.org/zap:go_default_library",
+    ],
 )

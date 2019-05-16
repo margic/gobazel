@@ -1,6 +1,6 @@
 # creates the local development environment
 .PHONY: create
-create: config
+create:
 	bazel run --cpu=k8 //deploy/local:create
 	helm init
 
@@ -57,14 +57,14 @@ applyServices:
 	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.apply
 	- bazel run --cpu=k8 //deploy/dev:deploy-greet.apply
 	- bazel run --cpu=k8 //deploy/dev:deploy-launcher.apply
+	- bazel run --cpu=k8 //deploy/dev:deploy-eventtest.apply
 
 .PHONY: deleteServices
 deleteServices:
 	- bazel run --cpu=k8 //deploy/dev:deploy-greeting.delete
 	- bazel run --cpu=k8 //deploy/dev:deploy-greet.delete
 	- bazel run --cpu=k8 //deploy/dev:deploy-launcher.delete
-
-
+	- bazel run --cpu=k8 //deploy/dev:deploy-eventtest.delete
 
 #############################
 # Some useful utility targets

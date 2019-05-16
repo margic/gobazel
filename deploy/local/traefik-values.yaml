@@ -1,0 +1,17 @@
+dashboard:
+  enabled: true
+  domain: traefik.k8s
+## Enable the /metrics endpoint, for now only supports prometheus
+## set to true to enable metric collection by prometheus
+metrics:
+  prometheus:
+    enabled: true
+    restrictAccess: false
+kubernetes:
+  namespaces:
+    - gobazel
+service:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8080"

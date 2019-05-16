@@ -12,4 +12,5 @@ spec:
       containers:
       - name: dashboard
         image: localhost:5000/gobazel-dashboard:dev
+        args: ["create"]
       restartPolicy: Never

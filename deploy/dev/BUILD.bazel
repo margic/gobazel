@@ -24,3 +24,11 @@ k8s_deploy(
     },
     template = ":launcher.yaml",
 )
+
+k8s_deploy(
+    name = "deploy-eventtest",
+    images = {
+        "localhost:5000/gobazel-eventtest:dev": "//eventtest:eventtest-image",
+    },
+    template = ":eventtest.yaml",
+)

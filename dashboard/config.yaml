@@ -6,4 +6,4 @@ grafana:
   password: Passw0rd
 
 dashboards:
-  filePath: dashboards
+  filePath: /app/dashboards

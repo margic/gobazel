@@ -143,7 +143,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: jaeger.minikube
+  - host: jaeger.k8s
     http:
       paths:
       - path: /

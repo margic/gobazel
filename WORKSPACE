@@ -75,6 +75,6 @@ k8s_defaults(
     name = "k8s_deploy",
     # This is the name of the cluster as it appears in:
     #   kubectl config current-context
-    cluster = "minikube",
+    context = "docker-for-desktop",
     namespace = "gobazel",
 )

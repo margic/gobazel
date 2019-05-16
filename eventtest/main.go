@@ -16,13 +16,20 @@ import (
 
 func main() {
 	var addr string
+	var debug bool
 	var wait time.Duration
 	flag.StringVarP(&addr, "natsAddr", "n", "nats.gobazel", "Address of Nats Service, defaults to nats.gobazel")
+	flag.BoolVarP(&debug, "debug", "d", false, "Enable debug logging by setting this to true")
 	flag.DurationVar(&wait, "shutdown-timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
 	flag.Parse()
 
-	logger, err := zap.NewProduction(zap.Fields(zap.String("Service", "EventTest")))
-
+	lc := zap.NewProductionConfig()
+	if debug {
+		lc.Level.SetLevel(zap.DebugLevel)
+	} else {
+		lc.Level.SetLevel(zap.InfoLevel)
+	}
+	logger, err := lc.Build(zap.Fields(zap.String("Services", "EventTest")))
 	if err != nil {
 		fmt.Printf("Unable to create logger: %s\n", err)
 		os.Exit(1)

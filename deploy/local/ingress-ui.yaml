@@ -17,7 +17,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - host: traefik.minikube
+  - host: traefik.k8s
     http:
       paths:
       - path: /
